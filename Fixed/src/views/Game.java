@@ -1,6 +1,8 @@
 package views;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -38,6 +40,23 @@ public class Game {
 		window.show();
 		window.setTitle("CalTrain - Group 2: Aguila, Batosalem, Mirafuentes");
 		window.setResizable(false);
+		
+		Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+            	/*
+            	 * 1. Check if a train has reached a station
+            	 * 		a. stop trains behind it
+            	 * 		b. board passengers
+            	 * 		
+            	 */
+            	
+            	
+            	
+            	update();
+            }
+        }, 0, 500);
 	}
 	
 	public void setUpLayout(){
@@ -113,12 +132,16 @@ public class Game {
 		return (num != number) ? number : outStat(num);
 	}
 	
+	public void update(){
+		
+	}
+	
 	public void logic(){
 		
 	}
 	
 	public void pause(){
-//		t.trains.get(0)
+		
 	}
 	
 	public CalTrain c;
