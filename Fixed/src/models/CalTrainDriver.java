@@ -68,22 +68,22 @@ public class CalTrainDriver {
 		System.out.println("\n---------------------\n");
 		while(totalPassServed != totalPassengers || trainsReturned) 
 		{
-			/* Add Trains into Railway if deficient */
-			if(totalNumSeats < totalPassengers) 
-			{
-				/* Establish Free Seats */
-				freeSeats = 5;
-				totalNumSeats += freeSeats;
-
-				/* Train is entering first station */
-				loadTrainReturned = false;
-				tempTrain = new Train(allStations.get(0), ctrain, freeSeats, trainCtr);
-				loadTrainReturned = true;
-
-				/* Indicates successful adding of Train */
-				allTrains.add(tempTrain);
-				trainCtr++;
-			}
+//			/* Add Trains into Railway if deficient */
+//			if(totalNumSeats < totalPassengers) 
+//			{
+//				/* Establish Free Seats */
+//				freeSeats = 5;
+//				totalNumSeats += freeSeats;
+//
+//				/* Train is entering first station */
+//				loadTrainReturned = false;
+//				tempTrain = new Train(allStations.get(0), ctrain, freeSeats, trainCtr);
+//				loadTrainReturned = true;
+//
+//				/* Indicates successful adding of Train */
+//				allTrains.add(tempTrain);
+//				trainCtr++;
+//			}
 
 			/* Random generation of passengers */
 			/*if (insertPass() && maxInsert < 5) {

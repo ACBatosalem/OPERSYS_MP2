@@ -11,41 +11,12 @@ import models.Train;
 import views.Game;
 
 public class Controller {
-	public Game g;
-	public CalTrain c;
-	
-	public ArrayList<Station> allStations = new ArrayList<Station>();
-	public ArrayList<Train> allTrains = new ArrayList<Train>();
-	
-	/* Passenger-related variables */
-	int totalPassengers = 10;
-	int passengersLeft = totalPassengers;	// Passengers left to be picked up
-	int passengersServed = totalPassengers;	// Passengers who haven't arrived to their destination
-	boolean trainsReturned = true;			// If trains haven't returned to Station 0
-
-	/* Program running-related variables */
-	int totalPassengersBoarded = 0;
-	int totalNumSeats = 0;
-	int threadsCompleted = 0;
-	int maxFreeSeats = 5;
-	int trainCtr = 0;
-	int passCtr = 10;
-	int maxInsert = 0;
-	boolean loadTrainReturned = false;
-
-	/* Temporary Variables */
-	int inStationNum, freeSeats;
-	Passenger tempRobot;
-	Train tempTrain;
-	
 	public Controller(){
 		this.g = new Game();
 		this.c = new CalTrain();
 		
 		createStations();
 		createPassengers();
-		
-		//logic();
 	}
 	
 	public void createStations(){
@@ -192,6 +163,33 @@ public class Controller {
 		int number = (int)Math.floor(Math.random()*10);
 		return (number >= 5) ? true : false;
 	}
+	
+	public Game g;
+	public CalTrain c;
+	
+	public ArrayList<Station> allStations = new ArrayList<Station>();
+	public ArrayList<Train> allTrains = new ArrayList<Train>();
+	
+	/* Passenger-related variables */
+	int totalPassengers = 10;
+	int passengersLeft = totalPassengers;	// Passengers left to be picked up
+	int passengersServed = totalPassengers;	// Passengers who haven't arrived to their destination
+	boolean trainsReturned = true;			// If trains haven't returned to Station 0
+
+	/* Program running-related variables */
+	int totalPassengersBoarded = 0;
+	int totalNumSeats = 0;
+	int threadsCompleted = 0;
+	int maxFreeSeats = 5;
+	int trainCtr = 0;
+	int passCtr = 10;
+	int maxInsert = 0;
+	boolean loadTrainReturned = false;
+
+	/* Temporary Variables */
+	int inStationNum, freeSeats;
+	Passenger tempRobot;
+	Train tempTrain;
 	
 	public static int totalPassServed = 0;
 }

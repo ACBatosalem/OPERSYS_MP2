@@ -8,11 +8,22 @@ public class InfoPanel {
 	public Station[] stations = new Station[8];
 	public Station s;
 	public TrainPreview p;
+	public AddPanel a;
+	public Game g;
 
-	public InfoPanel(){
+	public InfoPanel(Game g){
 		layout = new VBox(0);
 		
 		train(1, 0, 0);
+		
+		this.g = g;
+		
+		createAddPanel();
+	}
+	
+	public void createAddPanel(){
+		a = new AddPanel(g);
+		layout.getChildren().add(a.layout);
 	}
 	
 	public void initStations(){
@@ -27,11 +38,11 @@ public class InfoPanel {
 		addLayout(stations[index].layout);
 		if(p != null)
 			addLayout(p.layout);
+		createAddPanel();
 	}
 	
 	public void removeChildren(){
-		layout.getChildren().remove(s.layout);
-		layout.getChildren().remove(p.layout);
+		layout.getChildren().clear();
 	}
 	
 	public void addLayout(Pane n){
@@ -42,14 +53,16 @@ public class InfoPanel {
 		removeChildren();
 		addLayout(s.layout);
 		addLayout(p.layout);
+		createAddPanel();
 	}
 	
 	public void train(int trainNum, int passNum, int nextStation){
 		p = new TrainPreview(trainNum, passNum, nextStation);
 		layout.getChildren().clear();
-		if(s != null)
-			addLayout(s.layout);
+		if(stations[nextStation] != null)
+			addLayout(stations[nextStation].layout);
 		addLayout(p.layout);
+		createAddPanel();
 	}
 	
 }

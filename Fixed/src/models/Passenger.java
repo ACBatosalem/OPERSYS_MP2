@@ -32,6 +32,10 @@ public class Passenger implements Runnable {
 			return true;
 		return false;
 	}
+	
+	public void setDirection(boolean direction){
+		this.direction = direction;
+	}
 
 	@Override
 	public void run() {
