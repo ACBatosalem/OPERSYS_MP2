@@ -1,0 +1,7 @@
+.button{
+	-fx-background-color: transparent;
+}
+
+#station{
+	-fx-background-image: url('sprites/station.png');
+}
