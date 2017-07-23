@@ -55,7 +55,7 @@ public class CalTrain {
 							   " Waiting Passengers - " + station.getWaitPassCount(curr.getDirection()) +
 							   " Empty Seats - " + station.getEmptySeats(curr.getDirection()));
 			
-			try{Thread.sleep(500);}catch(Exception e){}
+			try{Thread.sleep(800);}catch(Exception e){}
 			
 			/* Reset Station */
 			//station.getLock().lock();

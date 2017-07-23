@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import models.CalTrain;
 import models.CalTrainDriver;
 import models.Passenger;
@@ -21,6 +25,8 @@ public class Game {
 	public static int ctr = 0;
 	public int passLeft = 0;
 	public int nextStation = 0;
+	
+	public Timer timer = new Timer();
 	
 	public Game(Stage window){
 		layout = new BorderPane();
@@ -43,19 +49,8 @@ public class Game {
 		window.setTitle("CalTrain - Group 2: Aguila, Batosalem, Mirafuentes");
 		window.setResizable(false);
 		
-		Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-            	/*
-            	 * 1. Check if a train has reached a station
-            	 * 		a. stop trains behind it
-            	 * 		b. board passengers
-            	 * 		
-            	 */
-            	update();
-            }
-        }, 0, 500);
+		update();
+		
 	}
 	
 	public void setUpLayout(){
@@ -154,13 +149,25 @@ public class Game {
 	}
 	
 	public void update(){
-		logic();
+		timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+            	/*
+            	 * 1. Check if a train has reached a station
+            	 * 		a. stop trains behind it
+            	 * 		b. board passengers
+            	 * 		
+            	 */
+            	logic();
+            }
+        }, 0, 500);
 	}
 	
 	public void logic(){
 //		if(ctr % 2 == 0){
 			for(int i = 0; i < allTrains.size(); i++){
-				try{allTrains.get(i).getTrainThread().sleep(2000);} catch(Exception e) {}
+				try{allTrains.get(i).getTrainThread().sleep(2500);} catch(Exception e) {}
+				
 				boolean tempDirection = allTrains.get(i).getDirection();
 				
 				int threadsToReap = -1;
@@ -185,8 +192,23 @@ public class Game {
 				
 				t.anims.get(i).start();
 				
+				resetStations();
 			}
 //		}
+	}
+	
+	public void resetStations(){
+		timer.cancel();
+		timer.purge();
+		
+		for(int i = 0; i < t.stations.length; i++){
+			int j = i;
+			p.createStation(j, allStations.get(j).getWaitPassCount(false));
+			layout.setRight(p.layout);
+		}
+		
+		update();
+		
 	}
 	
 	public void pause(){
