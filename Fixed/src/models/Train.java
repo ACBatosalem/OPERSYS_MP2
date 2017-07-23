@@ -75,6 +75,7 @@ public class Train implements Runnable {
 	@Override
 	public void run() {
 		while(getContinueRun()) {
+			System.out.println("running");
 			if (boardStation.getTrain(direction) == null &&
 				boardStation.checkNextQueue(this, direction)) 
 			{
@@ -98,7 +99,7 @@ public class Train implements Runnable {
 				System.out.println("Train " + trainNum + " is going next to Station "
 								   + (boardStation.getStationNum() + 1));
 			}
-			try{Thread.sleep(1000);} catch(Exception e) {}
+			try{Thread.sleep(1700);} catch(Exception e) {}
 		}
 	}
 

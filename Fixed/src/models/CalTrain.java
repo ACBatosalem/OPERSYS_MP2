@@ -55,14 +55,14 @@ public class CalTrain {
 							   " Waiting Passengers - " + station.getWaitPassCount(curr.getDirection()) +
 							   " Empty Seats - " + station.getEmptySeats(curr.getDirection()));
 			
-			try{Thread.sleep(800);}catch(Exception e){}
-			
 			/* Reset Station */
 			//station.getLock().lock();
 			station.setEmptySeats(curr.getDirection(), 0);
 			station.setTotalSeats(curr.getDirection(), 0);
 			System.out.println("Train " + curr.getTrainNum() 
 								+ " leaves Station " + (station.getStationNum() + 1));
+			
+			try{Thread.sleep(1000);}catch(Exception e){}
 			//station.getLock().unlock();
 		}
 	}
@@ -74,6 +74,11 @@ public class CalTrain {
 		System.out.println("Passenger " + pass.getPassNum() + " arrives at Station " 
 						   + (station.getStationNum() + 1) + ". Destination is Station " + 
 						   (pass.getLeaveStation().getStationNum() + 1));
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		station.getLock().unlock();
 
 		/* Passenger waits for a train */

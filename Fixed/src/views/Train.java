@@ -13,6 +13,8 @@ public class Train {
 	public int trainNum;
 	public AnimationTimer timer;
 	
+	public Game g;
+	
 	private int num = 10;
 	private int num2 = 10;
 	private boolean right = false;
@@ -39,7 +41,9 @@ public class Train {
 		sprite.setLayoutX(xValue);
 		sprite.setLayoutY(yValue);
 		
-		handleEvents(g);
+		this.g = g;
+		
+		handleEvents();
 		animate();
 	}
 	
@@ -48,7 +52,7 @@ public class Train {
 		yValue = y;
 	}
 	
-	public void handleEvents(Game g){
+	public void handleEvents(){
 		sprite.setOnMouseClicked(e -> {
 			g.passLeft = g.allTrains.get(trainNum - 1).getRiders().size();
 			g.p.train(trainNum, g.passLeft, g.nextStation);
@@ -59,8 +63,11 @@ public class Train {
 		timer = new AnimationTimer(){
 			@Override
             public void handle(long now) {
+				int multiplier = 5;
+				g.resetStations();
+				
             	if(sprite.getLayoutY() + num < hBounds && !right && !up && !reverse){
-            		num += 5;
+            		num += multiplier;
                 	sprite.setTranslateY(sprite.getLayoutY() + num);
             	}
             	else if(sprite.getLayoutY() + num >= hBounds && !right && !up && !reverse){
@@ -69,7 +76,7 @@ public class Train {
             	}
             	
             	if(sprite.getLayoutX() + num2 < wBounds && right && !up && !left && !reverse && !last){
-            		num2 += 5;
+            		num2 += multiplier;
             		sprite.setTranslateX(sprite.getLayoutX() + num2);
             	}
             	else if(sprite.getLayoutX() + num2 >= wBounds && !up && !reverse && !last){
@@ -81,7 +88,7 @@ public class Train {
             	}
             	
             	if(sprite.getLayoutY() + num > 10 && up && !right && !reverse){
-            		num = num - 5;
+            		num = num - multiplier;
             		sprite.setTranslateY(sprite.getLayoutY() + num);
             	}
             	else if(sprite.getLayoutY() + num <= 10 && up && !right && !left && !reverse){
@@ -91,7 +98,7 @@ public class Train {
             	}
             	
             	if(sprite.getLayoutX() + num2 > 75 && left && !reverse && !last){
-            		num2 -= 5;
+            		num2 -= multiplier;
             		sprite.setTranslateX(sprite.getLayoutX() + num2);
             	}
             	else if(sprite.getLayoutX() + num2 <= 75 && left && !reverse && !last){
@@ -103,7 +110,7 @@ public class Train {
             	}
             	
             	if(sprite.getLayoutX() + num2 < wBounds - 25 && reverse && !left && !last){
-            		num2 += 5;
+            		num2 += multiplier;
             		sprite.setTranslateX(sprite.getLayoutX() + num2);
             	}
             	else if(sprite.getLayoutX() + num2 >= wBounds - 25 && reverse && !left && !last){
@@ -112,7 +119,7 @@ public class Train {
             	}
             	
             	if(sprite.getLayoutY() + num < hBounds - 25 && reverse && down && !left && !last){
-            		num += 5;
+            		num += multiplier;
             		sprite.setTranslateY(sprite.getLayoutY() + num);
             	}
             	else if(sprite.getLayoutY() + num >= wBounds - 25 && reverse && down && !left && !last){
@@ -122,7 +129,7 @@ public class Train {
             	}
             	
             	if(sprite.getLayoutX() + num2 > 20 && reverse && left && !last){
-            		num2 -= 5;
+            		num2 -= multiplier;
             		sprite.setTranslateX(sprite.getLayoutX() + num2);
             	}
             	else if(sprite.getLayoutX() + num2 <= 20 && reverse && left && !last){
@@ -132,7 +139,7 @@ public class Train {
             	}
             	
             	if(sprite.getLayoutY() + num > 80 && reverse && last){
-            		num -= 5;
+            		num -= multiplier;
             		sprite.setTranslateY(sprite.getLayoutY() + num);
             	}
             	else if(sprite.getLayoutY() + num >= 80 && reverse && last){

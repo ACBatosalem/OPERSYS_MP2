@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -50,6 +51,14 @@ public class Game {
 		window.setResizable(false);
 		
 		update();
+		
+//		final Timeline timeline = new Timeline(
+//	            new KeyFrame(new Duration(500), 
+//	                         e -> {update();})
+//	        );
+//		timeline.setCycleCount(Timeline.INDEFINITE);
+//		timeline.setAutoReverse(false);
+//		timeline.play();
 		
 	}
 	
@@ -161,12 +170,16 @@ public class Game {
             	logic();
             }
         }, 0, 500);
+//		logic();
 	}
 	
 	public void logic(){
 //		if(ctr % 2 == 0){
 			for(int i = 0; i < allTrains.size(); i++){
-				try{allTrains.get(i).getTrainThread().sleep(2500);} catch(Exception e) {}
+				try{
+//					allTrains.get(i).getTrainThread().sleep(2500);
+					Thread.sleep(2500);
+					} catch(Exception e) {}
 				
 				boolean tempDirection = allTrains.get(i).getDirection();
 				
@@ -175,6 +188,9 @@ public class Game {
 				
 				threadsToReap = Math.min(allTrains.get(i).getBoardStation().getWaitPassCount(tempDirection),
 										 allTrains.get(i).getFreeSeats());
+				
+				if(allTrains.get(i).getBoardStation().getStationNum() == 1)
+					t.anims.get(i).start();
 				
 				if(threadsToReap == 0)
 					t.anims.get(i).start();
@@ -192,14 +208,13 @@ public class Game {
 				
 				t.anims.get(i).start();
 				
-				resetStations();
 			}
 //		}
 	}
 	
 	public void resetStations(){
-		timer.cancel();
-		timer.purge();
+//		timer.cancel();
+//		timer.purge();
 		
 		for(int i = 0; i < t.stations.length; i++){
 			int j = i;
@@ -207,7 +222,7 @@ public class Game {
 			layout.setRight(p.layout);
 		}
 		
-		update();
+//		update();
 		
 	}
 	
