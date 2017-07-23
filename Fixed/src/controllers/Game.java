@@ -174,12 +174,14 @@ public class Game {
 					Thread.sleep(2500);
 					} catch(Exception e) {e.printStackTrace();}
 				
+				
 				System.out.println(ctr);
+				
 				if(ctr % 2 == 1){
 					try{
 						System.out.println("Threads are asleep");
 						t.getAnim(i).stop();
-						Thread.sleep(100000);
+						Thread.sleep(1000000);
 					} 
 					catch(Exception e){
 						e.printStackTrace();
@@ -189,6 +191,7 @@ public class Game {
 						t.getAnim(i).start();
 					}
 				}
+				
 				
 				boolean tempDirection = allTrains.get(i).getDirection();
 				
@@ -247,6 +250,24 @@ public class Game {
 	}
 	
 	public void pause(){
+		for(int i = 0; i < allTrains.size(); i++){
+			System.out.println(ctr);
+			
+			if(ctr % 2 == 1){
+				try{
+					System.out.println("Threads are asleep");
+					t.getAnim(i).stop();
+					Thread.sleep(1000000);
+				} 
+				catch(Exception e){
+					e.printStackTrace();
+				}
+				finally{
+					ctr++;
+					t.getAnim(i).start();
+				}
+			}
+		}
 		
 	}
 	

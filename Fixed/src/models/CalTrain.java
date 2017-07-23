@@ -119,9 +119,11 @@ public class CalTrain {
 			/* Passenger signals station that he/she is seated on the train */
 			if (station.getEmptySeats(pass.getDirection()) == 0 || 
 				station.getTrainPass(pass.getDirection()) == 0 || 
-				allRode)
-				station.signalPassSeated();
-
+				allRode){
+//				synchronized(station.getAllPassSeated()){
+					station.signalPassSeated();
+//				}
+			}
 			boarded = true;
 		}
 
