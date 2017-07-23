@@ -53,9 +53,6 @@ public class Game {
             	 * 		b. board passengers
             	 * 		
             	 */
-            	
-            	
-            	
             	update();
             }
         }, 0, 500);
@@ -85,7 +82,7 @@ public class Game {
 		for(int i=0;i<totalPassengers;i++) 
 		{
 			inStationNum = (int)Math.floor(Math.random()*8);
-			Passenger tempRobot = new Passenger(allStations.get(inStationNum), c, i, allStations.get(CalTrainDriver.outStat(inStationNum)));
+			new Passenger(allStations.get(inStationNum), c, i, allStations.get(CalTrainDriver.outStat(inStationNum)));
 			threadsCompleted++;
 			try {Thread.sleep(300);} catch(Exception e){}
 		}
@@ -135,25 +132,6 @@ public class Game {
 				nextStation = allTrains.get(j).getBoardStation().getStationNum();
 			});
 		}
-		
-//		p.a.options[0].setOnMouseClicked(e -> {
-//			boolean no = false;
-//			if(ctr % 2 == 0 && t.trains.size() < 15){
-//				for(int i = 0; i < t.trains.size(); i++){
-//					System.out.println("y " + t.trains.get(i).getTranslateY() + " x " + t.trains.get(i).getTranslateX());
-//					if(t.trains.get(i).getTranslateY() < 150 && t.trains.get(i).getTranslateX() == 0)
-//						no = true;
-//				}
-//				if(!no){
-//					System.out.println("createTrain");
-//					createTrain();
-//				}
-//				System.out.println("Inside");	
-//			}
-//			else{
-//				System.out.println("Cannot create a train while paused!");
-//			}
-//		});
 	}
 	
 	public void createTrain(){
@@ -176,11 +154,39 @@ public class Game {
 	}
 	
 	public void update(){
-		
+		logic();
 	}
 	
 	public void logic(){
-		
+//		if(ctr % 2 == 0){
+			for(int i = 0; i < allTrains.size(); i++){
+				try{allTrains.get(i).getTrainThread().sleep(2000);} catch(Exception e) {}
+				boolean tempDirection = allTrains.get(i).getDirection();
+				
+				int threadsToReap = -1;
+				int threadsReaped = 0;
+				
+				threadsToReap = Math.min(allTrains.get(i).getBoardStation().getWaitPassCount(tempDirection),
+										 allTrains.get(i).getFreeSeats());
+				
+				if(threadsToReap == 0)
+					t.anims.get(i).start();
+				
+				while(threadsReaped < threadsToReap) {
+					boolean boarded = false;
+					if(threadsCompleted > 0) {
+						boarded = c.station_on_board(allTrains.get(i).getBoardStation(),
+														  allTrains.get(i).getBoardStation().getWaitingPass(tempDirection).get(0),
+														  threadsReaped + 1 == threadsToReap);
+						if(boarded)
+							threadsReaped++;
+					}
+				}
+				
+				t.anims.get(i).start();
+				
+			}
+//		}
 	}
 	
 	public void pause(){

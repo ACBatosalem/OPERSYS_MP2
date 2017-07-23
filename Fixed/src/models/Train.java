@@ -63,6 +63,10 @@ public class Train implements Runnable {
 		riders.remove(pass);
 		freeSeats = numSeats - riders.size();
 	}
+	
+	public void restart(){
+		continueRun = true;
+	}
 
 	public void stopRun() {
 		continueRun = false;
@@ -92,9 +96,9 @@ public class Train implements Runnable {
 				boardStation = boardStation.getNextStation(direction);
 				boardStation.addTrainQueue(this, direction);
 				System.out.println("Train " + trainNum + " is going next to Station "
-								   + boardStation.getStationNum());
+								   + (boardStation.getStationNum() + 1));
 			}
-			try{Thread.sleep(800);} catch(Exception e) {}
+			try{Thread.sleep(1500);} catch(Exception e) {}
 		}
 	}
 

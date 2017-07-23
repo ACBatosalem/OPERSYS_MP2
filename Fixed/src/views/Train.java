@@ -22,7 +22,7 @@ public class Train {
 	private boolean down = false;
 	private boolean last = false;
 	
-	public boolean atStation;
+	public int atStation = 0;
 	
 	public Train(int num, Game g){
 		trainNum = num;
@@ -146,10 +146,104 @@ public class Train {
             		down = false;
             	}
             	
-            	// stop at station 1
-            	if(sprite.getTranslateX() == 0 && sprite.getTranslateY() > 115 && sprite.getTranslateY() < 140)
-            		stop();
-            	
+            	if(!reverse){
+            		// stop at station 1
+                	if(sprite.getTranslateX() == 0 && sprite.getTranslateY() == 115){
+                		stop();
+                		atStation = 0;
+                	}
+                	
+                	// stop at station 2
+                	if(sprite.getTranslateX() == 0 && sprite.getTranslateY() == 365){
+                		stop();
+                		atStation = 1;
+                	}
+                	
+                	// stop at station 3
+                	if(sprite.getTranslateY() == hBounds && sprite.getTranslateX() == 100){
+                		stop();
+                		atStation = 2;
+                	}
+                	
+                	// stop at station 4
+                	if(sprite.getTranslateY() == hBounds && sprite.getTranslateX() == 360){
+                		stop();
+                		atStation = 3;
+                	}
+                	
+                	// stop at station 5
+                	if(sprite.getTranslateX() == wBounds && sprite.getTranslateY() == 365){
+                		stop();
+                		atStation = 4;
+                	}
+                		
+                	// stop at station 6
+                	if(sprite.getTranslateX() == wBounds && sprite.getTranslateY() == 115){
+                		stop();
+                		atStation = 5;
+                	}
+                	
+                	// stop at station 7
+                	if(sprite.getTranslateY() == 10 && sprite.getTranslateX() == 365){
+                		stop();
+                		atStation = 6;
+                	}
+                	
+                	// stop at station 8
+                	if(sprite.getTranslateY() == 10 && sprite.getTranslateX() == 115){
+                		stop();
+                		atStation = 7;
+                	}
+            	}
+            	else{
+            		// stop at station 1
+                	if(sprite.getTranslateX() == 20 && sprite.getTranslateY() == 110){
+                		stop();
+                		atStation = 0;
+                	}
+//                	
+                	// stop at station 2
+                	if(sprite.getTranslateX() == 20 && sprite.getTranslateY() == 365){
+                		stop();
+                		atStation = 1;
+                	}
+                	
+                	// stop at station 3
+                	if(sprite.getTranslateY() == 445 && sprite.getTranslateX() == 100){
+                		stop();
+                		atStation = 2;
+                	}
+                	
+                	// stop at station 4
+                	if(sprite.getTranslateY() == 445 && sprite.getTranslateX() == 350){
+                		stop();
+                		atStation = 3;
+                	}
+                	
+                	// stop at station 5
+                	if(sprite.getTranslateX() > wBounds - 50 && sprite.getTranslateX() < wBounds && sprite.getTranslateY() == 370){	
+            			stop();
+                		atStation = 4;
+                	}
+                		
+                	// stop at station 6
+            		if(sprite.getTranslateX() > wBounds - 50 && sprite.getTranslateX() < wBounds && sprite.getTranslateY() == 120){	
+                		stop();
+                		atStation = 5;
+                	}
+                	
+                	// stop at station 7
+                	if(sprite.getTranslateY() < 80 && sprite.getTranslateY() > 10  && sprite.getTranslateX() == 350){
+                		stop();
+                		atStation = 6;
+                	}
+                	
+                	// stop at station 8
+                	if(sprite.getTranslateY() < 80 && sprite.getTranslateY() > 10  && sprite.getTranslateX() == 105){
+                		stop();
+                		atStation = 7;
+                	}
+            	}
 			}
 		};
 		

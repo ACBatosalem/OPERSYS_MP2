@@ -38,7 +38,7 @@ public class CalTrain {
 			//station.getLock().unlock();
 
 			System.out.println("Train " + curr.getTrainNum() + 
-							   " arrives in Station " + station.getStationNum() 
+							   " arrives in Station " + (station.getStationNum() + 1) 
 							   + ". Train's number of available seats = " 
 							   + curr.getFreeSeats());
 
@@ -51,16 +51,18 @@ public class CalTrain {
 				} catch(Exception e) {}
 			} 
 
-			System.out.println("Station " + station.getStationNum() +
+			System.out.println("Station " + (station.getStationNum() + 1) +
 							   " Waiting Passengers - " + station.getWaitPassCount(curr.getDirection()) +
 							   " Empty Seats - " + station.getEmptySeats(curr.getDirection()));
-
+			
+			try{Thread.sleep(500);}catch(Exception e){}
+			
 			/* Reset Station */
 			//station.getLock().lock();
 			station.setEmptySeats(curr.getDirection(), 0);
 			station.setTotalSeats(curr.getDirection(), 0);
 			System.out.println("Train " + curr.getTrainNum() 
-								+ " leaves Station " + station.getStationNum());
+								+ " leaves Station " + (station.getStationNum() + 1));
 			//station.getLock().unlock();
 		}
 	}
@@ -70,8 +72,8 @@ public class CalTrain {
 		/* Passenger arrives at station */
 		station.getLock().lock();
 		System.out.println("Passenger " + pass.getPassNum() + " arrives at Station " 
-						   + station.getStationNum() + ". Destination is Station " + 
-						   pass.getLeaveStation().getStationNum());
+						   + (station.getStationNum() + 1) + ". Destination is Station " + 
+						   (pass.getLeaveStation().getStationNum() + 1));
 		station.getLock().unlock();
 
 		/* Passenger waits for a train */
@@ -127,14 +129,14 @@ public class CalTrain {
 					station.incEmptySeats(t.getRiders().get(k).getDirection());
 					System.out.println("Passenger " + t.getRiders().get(k).getPassNum() + 
 									   " leaves Train " + t.getTrainNum() + 
-									   " at Station " + station.getStationNum());
+									   " at Station " + (station.getStationNum() + 1));
 					t.removeRider(t.getRiders().get(k));
 					k--;
 					exiters++;
 				}
 			}
 			//station.getLock().unlock();
-			try { Thread.sleep(500); } catch(Exception e) {}
+//			try { Thread.sleep(500); } catch(Exception e) {}
 		}
 		return exiters;
 	}

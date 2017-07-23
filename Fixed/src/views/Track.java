@@ -24,12 +24,10 @@ public class Track {
 		setUpStations();
 		
 		setUpLayout();
-		
-		createTrain(g);
 	}
 	
 	public void createTrain(Game g){
-		Train t = new Train(trains.size() + 1, g);
+		views.Train t = new views.Train(trains.size() + 1, g);
 		
 		anims.add(t.timer);
 		
@@ -77,7 +75,8 @@ public class Track {
 	}
 	
 	public void resetLayout(){
-		layout.getChildren().removeAll(stations);
+		layout.getChildren().clear();
+		layout.getChildren().addAll(trains);
 		layout.getChildren().addAll(stations);
 	}
 	
