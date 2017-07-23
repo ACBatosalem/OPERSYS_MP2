@@ -169,7 +169,6 @@ public class Game {
 //		if(ctr % 2 == 0){
 			for(int i = 0; i < allTrains.size(); i++){
 				try{
-//					allTrains.get(i).getTrainThread().sleep(2500);
 					Thread.sleep(2500);
 					} catch(Exception e) {}
 				
@@ -208,7 +207,6 @@ public class Game {
 		}
 		p.createStation(currentStation, allStations.get(currentStation).getWaitPassCount(false), allStations.get(currentStation).getWaitPassCount(true));
 		layout.setRight(p.layout);
-		System.out.println(allStations.get(currentStation).getWaitPassCount(false) + " " + allStations.get(currentStation).getWaitPassCount(true));
 	}
 	
 	public void pause(){

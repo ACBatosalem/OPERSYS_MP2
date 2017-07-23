@@ -64,9 +64,14 @@ public class Station {
 	}
 	
 	public void pass(int pass){
-		passengers.clear();
-		
 		int total = passengers.size();
+		
+		if(pass < total){
+			passengers.clear();
+		}
+		
+		total = passengers.size();
+		
 		if(pass > total){
 			for(int i = 0; i < pass - total; i++){
 				addPassenger();
