@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import models.CalTrain;
-import models.CalTrainDriver;
 import models.Passenger;
 import models.Station;
 import models.Train;
@@ -31,7 +30,7 @@ public class Game {
 		t = new Track(this);
 		p = new InfoPanel(this);
 		
-		this.c = new CalTrain();
+		this.c = new CalTrain(this);
 		setUpLayout();
 		
 		scene = new Scene(layout, 800, 500);
@@ -75,7 +74,7 @@ public class Game {
 		for(int i=0;i<totalPassengers;i++) 
 		{
 			inStationNum = (int)Math.floor(Math.random()*8);
-			new Passenger(allStations.get(inStationNum), c, i, allStations.get(CalTrainDriver.outStat(inStationNum)));
+			new Passenger(allStations.get(inStationNum), c, i, allStations.get(outStat(inStationNum)));
 			threadsCompleted++;
 			try {Thread.sleep(300);} catch(Exception e){}
 		}
@@ -163,76 +162,65 @@ public class Game {
 	}
 	
 	public void logic(){
-//		if(ctr % 2 == 0){
-			for(int i = 0; i < allTrains.size(); i++){
+		for(int i = 0; i < allTrains.size(); i++){
+			currentTrain = i;
+			try{
+				Thread.sleep(2500);
+				} catch(Exception e) {e.printStackTrace();}
+			
+			if(ctr % 2 == 1){
 				try{
-					Thread.sleep(2500);
-					} catch(Exception e) {e.printStackTrace();}
-				
-				
-				System.out.println(ctr);
-				
-				if(ctr % 2 == 1){
-					try{
-						System.out.println("Threads are asleep");
-						t.getAnim(i).stop();
-						Thread.sleep(1000000);
-					} 
-					catch(Exception e){
-						e.printStackTrace();
-					}
-					finally{
-						ctr++;
-						t.getAnim(i).start();
-					}
+					System.out.println("Threads are asleep");
+					t.getAnim(i).stop();
+					Thread.sleep(1000000);
+				} 
+				catch(Exception e){
+					e.printStackTrace();
 				}
-				
-				
-				boolean tempDirection = allTrains.get(i).getDirection();
-				
-				int threadsToReap = -1;
-				int threadsReaped = 0;
-				
-				threadsToReap = Math.min(allTrains.get(i).getBoardStation().getWaitPassCount(tempDirection),
-										 allTrains.get(i).getFreeSeats());
-				
-				if(threadsToReap == 0 || allTrains.get(i).getBoardStation().getStationNum() == 7)
+				finally{
+					ctr++;
 					t.getAnim(i).start();
-				
-				while(threadsReaped < threadsToReap) {
-					boolean boarded = false;
-					if(threadsCompleted > 0) {
-						boarded = c.station_on_board(allTrains.get(i).getBoardStation(),
-														  allTrains.get(i).getBoardStation().getWaitingPass(tempDirection).get(0),
-														  threadsReaped + 1 == threadsToReap);
-						if(boarded)
-							threadsReaped++;
-					}
 				}
-				
-				t.getAnim(i).start();
-				
-				passengersLeft -= threadsReaped;
-				totalPassengersBoarded += threadsReaped;
-
-				if(threadsToReap != threadsReaped)
-					System.out.println("Error: Too many passengers on this train!");
-				try{Thread.sleep(800);} catch(Exception e){e.printStackTrace();}
-
-				/* Make sure all trains return to first station */
-				if (totalPassServed == totalPassengers && allTrains.get(i).getBoardStation().getStationNum() == 0) {
-					allTrains.get(i).stopRun();
-					System.out.println("Train " + allTrains.get(i).getTrainNum() + " is decommissioned.");
-					allTrains.remove(allTrains.get(i));
-					i--;
-					if (allTrains.size() == 0) {
-						System.out.println("All trains are gone!");
-						trainsReturned = false;
-					}
-				}
-				
 			}
-//		}
+			
+			boolean tempDirection = allTrains.get(i).getDirection();
+			
+			int threadsToReap = -1;
+			int threadsReaped = 0;
+			
+			threadsToReap = Math.min(allTrains.get(i).getBoardStation().getWaitPassCount(tempDirection),
+									 allTrains.get(i).getFreeSeats());
+			
+			while(threadsReaped < threadsToReap) {
+				boolean boarded = false;
+				if(threadsCompleted > 0) {
+					boarded = c.station_on_board(allTrains.get(i).getBoardStation(),
+													  allTrains.get(i).getBoardStation().getWaitingPass(tempDirection).get(0),
+													  threadsReaped + 1 == threadsToReap);
+					if(boarded)
+						threadsReaped++;
+				}
+			}
+			
+			passengersLeft -= threadsReaped;
+			totalPassengersBoarded += threadsReaped;
+
+			if(threadsToReap != threadsReaped)
+				System.out.println("Error: Too many passengers on this train!");
+			try{Thread.sleep(800);} catch(Exception e){e.printStackTrace();}
+
+			/* Make sure all trains return to first station */
+			if (totalPassServed == totalPassengers) {
+				allTrains.get(i).stopRun();
+				System.out.println("Train " + allTrains.get(i).getTrainNum() + " is decommissioned.");
+				allTrains.remove(allTrains.get(i));
+				i--;
+				if (allTrains.size() == 0) {
+					System.out.println("All trains are gone!");
+				}
+			}
+			
+		}
 	}
 	
 	public void resetStations(){
@@ -242,6 +230,10 @@ public class Game {
 		}
 		p.createStation(currentStation, allStations.get(currentStation).getWaitPassCount(false), allStations.get(currentStation).getWaitPassCount(true));
 		layout.setRight(p.layout);
+	}
+	
+	public void resetTrainPrev(){
+		p.train(allTrains.size(), allTrains.get(currentTrain).getRiders().size(), allTrains.get(currentTrain).getBoardStation().getStationNum());
 	}
 	
 	public void pause(){
@@ -293,6 +285,8 @@ public class Game {
 	int inStationNum, freeSeats;
 	Passenger tempRobot;
 	Train tempTrain;
+	
+	public static int currentTrain = 0;
 	
 	public static int totalPassServed = 0;
 }

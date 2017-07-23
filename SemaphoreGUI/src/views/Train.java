@@ -66,6 +66,7 @@ public class Train {
             public void handle(long now) {
 				int multiplier = 5;
 				g.resetStations();
+				g.resetTrainPrev();
 				
             	if(sprite.getLayoutY() + num < hBounds && !right && !up && !reverse){
             		num += multiplier;
@@ -199,14 +200,16 @@ public class Train {
                 	
                 	// stop at station 8
                 	if(sprite.getTranslateY() == 10 && sprite.getTranslateX() == 115){
-                		stop();
+                		if(g.allStations.get(7).getWaitingPass(true).size() > 0)
+                			stop();
                 		atStation = 7;
                 	}
             	}
             	else{
             		// stop at station 1
                 	if(sprite.getTranslateX() == 20 && sprite.getTranslateY() == 110){
-                		stop();
+                		if(g.allStations.get(7).getWaitingPass(false).size() > 0)
+                			stop();
                 		atStation = 0;
                 	}
 //                	
@@ -248,7 +251,8 @@ public class Train {
                 	
                 	// stop at station 8
                 	if(sprite.getTranslateY() < 80 && sprite.getTranslateY() > 10  && sprite.getTranslateX() == 105){
-                		stop();
+                		if(g.allStations.get(7).getWaitingPass(false).size() > 0)
+                			stop();
                 		atStation = 7;
                 	}
             	}
