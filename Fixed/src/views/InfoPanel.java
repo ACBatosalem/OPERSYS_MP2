@@ -14,7 +14,7 @@ public class InfoPanel {
 	public InfoPanel(Game g){
 		layout = new VBox(0);
 		
-		train(1, 0, 0);
+//		train(1, 0, 0);
 		
 		this.g = g;
 		

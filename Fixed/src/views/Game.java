@@ -20,6 +20,7 @@ public class Game {
 	public InfoPanel p;
 	public static int ctr = 0;
 	public int passLeft = 0;
+	public int nextStation = 0;
 	
 	public Game(Stage window){
 		layout = new BorderPane();
@@ -35,6 +36,7 @@ public class Game {
 		
 		createStations();
 		createPassengers();
+		createTrain();
 		
 		window.setScene(scene);
 		window.show();
@@ -125,6 +127,47 @@ public class Game {
 				layout.setRight(p.layout);
 			});
 		}
+		
+		for(int i = 0; i < t.trains.size(); i++){
+			int j = i;
+			t.getTrain(i).setOnMouseClicked(e -> {
+				passLeft = allTrains.get(j).getRiders().size();
+				nextStation = allTrains.get(j).getBoardStation().getStationNum();
+			});
+		}
+		
+//		p.a.options[0].setOnMouseClicked(e -> {
+//			boolean no = false;
+//			if(ctr % 2 == 0 && t.trains.size() < 15){
+//				for(int i = 0; i < t.trains.size(); i++){
+//					System.out.println("y " + t.trains.get(i).getTranslateY() + " x " + t.trains.get(i).getTranslateX());
+//					if(t.trains.get(i).getTranslateY() < 150 && t.trains.get(i).getTranslateX() == 0)
+//						no = true;
+//				}
+//				if(!no){
+//					System.out.println("createTrain");
+//					createTrain();
+//				}
+//				System.out.println("Inside");	
+//			}
+//			else{
+//				System.out.println("Cannot create a train while paused!");
+//			}
+//		});
+	}
+	
+	public void createTrain(){
+		freeSeats = 5;
+		totalNumSeats += freeSeats;
+		
+		loadTrainReturned = false;
+		tempTrain = new Train(allStations.get(0), c, freeSeats, trainCtr);
+		loadTrainReturned = true;
+		allTrains.add(tempTrain);
+		trainCtr++;
+		
+		p.train(allTrains.size(), tempTrain.getRiders().size(), tempTrain.getBoardStation().getStationNum());
+		t.createTrain(this);
 	}
 	
 	public int outStat(int num) {

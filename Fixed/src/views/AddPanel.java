@@ -19,7 +19,6 @@ public class AddPanel {
 	
 	public Game g;
 	
-	public boolean addTrain = false;
 	public boolean addPass = false;
 	
 	public AddPanel(Game g){
@@ -48,7 +47,6 @@ public class AddPanel {
 		}
 		
 		options[0].setOnMouseClicked(e -> {
-			addTrain = true;
 			boolean no = false;
 			if(Game.ctr % 2 == 0 && g.t.trains.size() < 15){
 				for(int i = 0; i < g.t.trains.size(); i++){
@@ -56,8 +54,11 @@ public class AddPanel {
 					if(g.t.trains.get(i).getTranslateY() < 150 && g.t.trains.get(i).getTranslateX() == 0)
 						no = true;
 				}
-				if(!no)
-					g.t.createTrain(g); 
+				if(!no){
+					System.out.println("createTrain");
+					g.createTrain();
+				}
+				System.out.println("Inside");	
 			}
 			else{
 				System.out.println("Cannot create a train while paused!");

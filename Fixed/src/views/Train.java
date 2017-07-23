@@ -22,6 +22,8 @@ public class Train {
 	private boolean down = false;
 	private boolean last = false;
 	
+	public boolean atStation;
+	
 	public Train(int num, Game g){
 		trainNum = num;
 		
@@ -48,7 +50,8 @@ public class Train {
 	
 	public void handleEvents(Game g){
 		sprite.setOnMouseClicked(e -> {
-			g.p.train(trainNum, g.passLeft, 2);
+			g.passLeft = g.allTrains.get(trainNum - 1).getRiders().size();
+			g.p.train(trainNum, g.passLeft, g.nextStation);
 		});
 	}
 	
@@ -142,6 +145,11 @@ public class Train {
             		reverse = false;
             		down = false;
             	}
+            	
+            	// stop at station 1
+            	if(sprite.getTranslateX() == 0 && sprite.getTranslateY() > 115 && sprite.getTranslateY() < 140)
+            		stop();
+            	
 			}
 		};
 		
