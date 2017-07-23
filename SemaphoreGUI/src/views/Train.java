@@ -65,6 +65,7 @@ public class Train {
 			@Override
             public void handle(long now) {
 				int multiplier = 5;
+				
 				g.resetStations();
 				g.resetTrainPrev();
 				
@@ -158,7 +159,8 @@ public class Train {
             	if(!reverse){
             		// stop at station 1
                 	if(sprite.getTranslateX() == 0 && sprite.getTranslateY() == 115){
-                		stop();
+                		if(g.allStations.get(0).getWaitingPass(true).size() > 0)
+                			stop();
                 		atStation = 0;
                 	}
                 	
@@ -208,7 +210,7 @@ public class Train {
             	else{
             		// stop at station 1
                 	if(sprite.getTranslateX() == 20 && sprite.getTranslateY() == 110){
-                		if(g.allStations.get(7).getWaitingPass(false).size() > 0)
+                		if(g.allStations.get(0).getWaitingPass(false).size() > 0)
                 			stop();
                 		atStation = 0;
                 	}

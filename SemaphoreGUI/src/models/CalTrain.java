@@ -73,7 +73,7 @@ public class CalTrain {
 			System.out.println("Train " + curr.getTrainNum() 
 								+ " leaves Station " + (station.getStationNum() + 1));
 			if(g.t.anims.size() > 0)
-				g.t.getAnim(Game.currentTrain).start();
+				g.t.getAnim(curr.getTrainNum()).start();
 			//station.getLock().unlock();
 		}
 	}

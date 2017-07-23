@@ -214,6 +214,8 @@ public class Game {
 				allTrains.get(i).stopRun();
 				System.out.println("Train " + allTrains.get(i).getTrainNum() + " is decommissioned.");
 				allTrains.remove(allTrains.get(i));
+				t.anims.remove(i);
+				t.trains.remove(i);
 				i--;
 				if (allTrains.size() == 0) {
 					System.out.println("All trains are gone!");
@@ -233,7 +235,8 @@ public class Game {
 	}
 	
 	public void resetTrainPrev(){
-		p.train(allTrains.size(), allTrains.get(currentTrain).getRiders().size(), allTrains.get(currentTrain).getBoardStation().getStationNum());
+		if(allTrains.size() > 0)
+			p.train(allTrains.size(), allTrains.get(currentTrain).getRiders().size(), allTrains.get(currentTrain).getBoardStation().getStationNum());
 	}
 	
 	public void pause(){
