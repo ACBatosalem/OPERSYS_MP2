@@ -56,7 +56,7 @@ public class InfoPanel {
 	}
 	
 	public void train(int trainNum, int passNum, int nextStation){
-		p = new TrainPreview(trainNum, passNum, nextStation);
+		p = new TrainPreview(trainNum, passNum, nextStation + 1);
 		layout.getChildren().clear();
 		if(stations[nextStation] != null)
 			addLayout(stations[nextStation].layout);

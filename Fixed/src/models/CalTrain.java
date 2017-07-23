@@ -3,6 +3,12 @@ package models;
 import controllers.Game;
 
 public class CalTrain {
+	public Game g;
+	
+	public CalTrain(Game g){
+		this.g = g;
+	}
+	
 	public Station station_init(int num) 
 	{
 		System.out.println("Initializing Station " + num);
@@ -66,8 +72,8 @@ public class CalTrain {
 			station.setTotalSeats(curr.getDirection(), 0);
 			System.out.println("Train " + curr.getTrainNum() 
 								+ " leaves Station " + (station.getStationNum() + 1));
-			
-			try{Thread.sleep(1000);}catch(Exception e){}
+			if(g.t.anims.size() > 0)
+				g.t.getAnim(curr.getTrainNum()).start();
 			//station.getLock().unlock();
 		}
 	}
@@ -80,7 +86,7 @@ public class CalTrain {
 						   + (station.getStationNum() + 1) + ". Destination is Station " + 
 						   (pass.getLeaveStation().getStationNum() + 1));
 		try {
-			Thread.sleep(500);
+			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
 //			e1.printStackTrace();
 		}
@@ -126,7 +132,7 @@ public class CalTrain {
 			}
 			boarded = true;
 		}
-
+		
 		try { Thread.sleep(1000); } catch(Exception e) {}
 		return boarded;
 	}
