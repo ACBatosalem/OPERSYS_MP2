@@ -75,6 +75,7 @@ public class Train implements Runnable {
 	@Override
 	public void run() {
 		while(getContinueRun()) {
+			System.out.println("thread alive");
 			if (boardStation.getTrain(direction) == null &&
 				boardStation.checkNextQueue(this, direction)) 
 			{

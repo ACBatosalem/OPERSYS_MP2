@@ -8,10 +8,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Station {
 	/* Constructors */
 	public Station(int num) {
-		train_arrived = new ReentrantLock().newCondition();
-		all_pass_seated = new ReentrantLock().newCondition();
+
 		on_board = new ReentrantLock();
 		lock = new ReentrantLock();
+		train_arrived = lock.newCondition();
+		all_pass_seated = lock.newCondition();
 		stationNum = num;
 		leftEmptySeats = rightEmptySeats = 0;
 		leftTrainPass = rightTrainPass = 0;
@@ -216,7 +217,10 @@ public class Station {
 	/* Synchronization Functions */
 	public void waitPassSeated() {
 		try {
-			all_pass_seated.wait();
+//			synchronized(all_pass_seated){
+				all_pass_seated.wait();
+//			}
+			
 			Thread.sleep(1500);
 		} catch(Exception e){}
 	}
@@ -229,7 +233,9 @@ public class Station {
 
 	public void waitTrain() {
 		try {
-			train_arrived.wait();
+//			synchronized(train_arrived){
+				train_arrived.wait();
+//			}
 		} catch(Exception e){}
 	}
 

@@ -1,5 +1,7 @@
 package models;
 
+import controllers.Game;
+
 public class CalTrain {
 	public Station station_init(int num) 
 	{
@@ -16,7 +18,7 @@ public class CalTrain {
 			/* Train arrives at specific station */
 		//	station.getLock().lock();
 			trainExiters = station_off_board(station, curr);
-			CalTrainDriver.totalPassServed += trainExiters;
+			Game.totalPassServed += trainExiters;
 			if (station.getStationNum() == 7 && station.getTrain(true) != null) 				// When reaching end stations,
 			{												// Train drops off from one side
 				station.setRightTrain(null);				// and receives in the other
@@ -47,7 +49,10 @@ public class CalTrain {
 			{
 				try {
 					station.signalTrain();
-					station.waitPassSeated();
+//					synchronized(station.getAllPassSeated()){
+						station.waitPassSeated();
+//					}
+					
 				} catch(Exception e) {}
 			} 
 
@@ -77,7 +82,7 @@ public class CalTrain {
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+//			e1.printStackTrace();
 		}
 		station.getLock().unlock();
 

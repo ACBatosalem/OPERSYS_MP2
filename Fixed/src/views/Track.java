@@ -2,6 +2,7 @@ package views;
 
 import java.util.ArrayList;
 
+import controllers.Game;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

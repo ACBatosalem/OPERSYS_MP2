@@ -1,5 +1,6 @@
 package views;
 
+import controllers.Game;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -89,10 +90,7 @@ public class AddPanel {
 		options[2].setOnMouseClicked(e -> {
 			Game.ctr++;
 			for(int i = 0; i < g.t.anims.size(); i++){
-				if(Game.ctr % 2 == 1)
-					g.t.getAnim(i).stop();
-				else
-					g.t.getAnim(i).start();
+				System.out.println("Paused!");
 			}
 		});
 	}

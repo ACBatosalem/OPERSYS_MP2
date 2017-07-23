@@ -1,5 +1,6 @@
 package views;
 
+import controllers.Game;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 

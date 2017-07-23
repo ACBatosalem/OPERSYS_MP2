@@ -1,5 +1,6 @@
 package views;
 
+import controllers.Game;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

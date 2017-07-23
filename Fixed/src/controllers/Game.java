@@ -1,4 +1,4 @@
-package views;
+package controllers;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -17,6 +17,8 @@ import models.CalTrainDriver;
 import models.Passenger;
 import models.Station;
 import models.Train;
+import views.InfoPanel;
+import views.Track;
 
 public class Game {
 	public BorderPane layout;
@@ -162,7 +164,7 @@ public class Game {
             	 */
             	logic();
             }
-        }, 0, 500);
+        }, 0, 250);
 	}
 	
 	public void logic(){
@@ -170,7 +172,22 @@ public class Game {
 			for(int i = 0; i < allTrains.size(); i++){
 				try{
 					Thread.sleep(2500);
-					} catch(Exception e) {}
+					} catch(Exception e) {e.printStackTrace();}
+				System.out.println(ctr);
+				if(ctr % 2 == 1){
+					try{
+						System.out.println("Threads are asleep");
+						t.getAnim(i).stop();
+						Thread.sleep(100000);
+					} 
+					catch(Exception e){
+						e.printStackTrace();
+					}
+					finally{
+						ctr++;
+						t.getAnim(i).start();
+					}
+				}
 				
 				boolean tempDirection = allTrains.get(i).getDirection();
 				
@@ -180,8 +197,8 @@ public class Game {
 				threadsToReap = Math.min(allTrains.get(i).getBoardStation().getWaitPassCount(tempDirection),
 										 allTrains.get(i).getFreeSeats());
 				
-				if(threadsToReap == 0)
-					t.anims.get(i).start();
+				if(threadsToReap == 0 || allTrains.get(i).getBoardStation().getStationNum() == 7)
+					t.getAnim(i).start();
 				
 				while(threadsReaped < threadsToReap) {
 					boolean boarded = false;
@@ -194,14 +211,14 @@ public class Game {
 					}
 				}
 				
-				t.anims.get(i).start();
+				t.getAnim(i).start();
 				
 				passengersLeft -= threadsReaped;
 				totalPassengersBoarded += threadsReaped;
 
 				if(threadsToReap != threadsReaped)
 					System.out.println("Error: Too many passengers on this train!");
-				try{Thread.sleep(800);} catch(Exception e){}
+				try{Thread.sleep(800);} catch(Exception e){e.printStackTrace();}
 
 				/* Make sure all trains return to first station */
 				if (totalPassServed == totalPassengers && allTrains.get(i).getBoardStation().getStationNum() == 0) {
