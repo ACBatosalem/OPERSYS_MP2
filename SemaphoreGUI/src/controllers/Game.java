@@ -39,7 +39,8 @@ public class Game {
 		
 		createStations();
 		createPassengers();
-		createTrain();
+		if(totalPassengers > 0)
+			createTrain();
 		
 		window.setScene(scene);
 		window.show();
@@ -225,6 +226,10 @@ public class Game {
 		}
 	}
 	
+	public void resetTrains(){
+		t.resetLayout();
+	}
+	
 	public void resetStations(){
 		for(int i = 0; i < t.stations.length; i++){
 			p.createStation(i, allStations.get(i).getWaitPassCount(false), allStations.get(i).getWaitPassCount(true));
@@ -269,7 +274,7 @@ public class Game {
 	public ArrayList<Train> allTrains = new ArrayList<Train>();
 	
 	/* Passenger-related variables */
-	int totalPassengers = 10;
+	int totalPassengers = 0;
 	int passengersLeft = totalPassengers;	// Passengers left to be picked up
 	int passengersServed = totalPassengers;	// Passengers who haven't arrived to their destination
 	boolean trainsReturned = true;			// If trains haven't returned to Station 0

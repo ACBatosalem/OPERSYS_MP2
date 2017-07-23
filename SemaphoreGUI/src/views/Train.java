@@ -68,6 +68,7 @@ public class Train {
 				
 				g.resetStations();
 				g.resetTrainPrev();
+				g.resetTrains();
 				
             	if(sprite.getLayoutY() + num < hBounds && !right && !up && !reverse){
             		num += multiplier;
