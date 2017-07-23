@@ -196,6 +196,25 @@ public class Game {
 				
 				t.anims.get(i).start();
 				
+				passengersLeft -= threadsReaped;
+				totalPassengersBoarded += threadsReaped;
+
+				if(threadsToReap != threadsReaped)
+					System.out.println("Error: Too many passengers on this train!");
+				try{Thread.sleep(800);} catch(Exception e){}
+
+				/* Make sure all trains return to first station */
+				if (totalPassServed == totalPassengers && allTrains.get(i).getBoardStation().getStationNum() == 0) {
+					allTrains.get(i).stopRun();
+					System.out.println("Train " + allTrains.get(i).getTrainNum() + " is decommissioned.");
+					allTrains.remove(allTrains.get(i));
+					i--;
+					if (allTrains.size() == 0) {
+						System.out.println("All trains are gone!");
+						trainsReturned = false;
+					}
+				}
+				
 			}
 //		}
 	}
