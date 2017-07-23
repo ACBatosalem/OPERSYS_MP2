@@ -48,7 +48,7 @@ public class CalTrain {
 			while(station.getWaitPassCount(curr.getDirection()) > 0 && station.getEmptySeats(curr.getDirection()) > 0)
 			{
 				try {
-					station.signalTrain();
+//					station.signalTrain();
 //					synchronized(station.getAllPassSeated()){
 						station.waitPassSeated();
 //					}
@@ -121,7 +121,7 @@ public class CalTrain {
 				station.getTrainPass(pass.getDirection()) == 0 || 
 				allRode){
 //				synchronized(station.getAllPassSeated()){
-					station.signalPassSeated();
+//					station.signalPassSeated();
 //				}
 			}
 			boarded = true;
