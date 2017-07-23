@@ -164,7 +164,7 @@ public class Game {
             	 */
             	logic();
             }
-        }, 0, 250);
+        }, 0, 500);
 	}
 	
 	public void logic(){
@@ -173,6 +173,7 @@ public class Game {
 				try{
 					Thread.sleep(2500);
 					} catch(Exception e) {e.printStackTrace();}
+				
 				System.out.println(ctr);
 				if(ctr % 2 == 1){
 					try{

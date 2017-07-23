@@ -217,32 +217,38 @@ public class Station {
 	/* Synchronization Functions */
 	public void waitPassSeated() {
 		try {
-//			synchronized(all_pass_seated){
+			synchronized(all_pass_seated){
 				all_pass_seated.wait();
-//			}
+			}
 			
 			Thread.sleep(1500);
-		} catch(Exception e){}
+		} catch(Exception e){e.printStackTrace();}
 	}
 
 	public void signalPassSeated() {
 		try {
-			all_pass_seated.signal();
-		} catch(Exception e){}
+			synchronized(all_pass_seated){
+				all_pass_seated.signal();
+			}
+			
+		} catch(Exception e){e.printStackTrace();}
 	}
 
 	public void waitTrain() {
 		try {
-//			synchronized(train_arrived){
+			synchronized(train_arrived){
 				train_arrived.wait();
-//			}
-		} catch(Exception e){}
+			}
+		} catch(Exception e){e.printStackTrace();}
 	}
 
 	public void signalTrain() {
 		try {
-			train_arrived.signal();
-		} catch(Exception e){}
+			synchronized(train_arrived){
+				train_arrived.signal();
+			}
+			
+		} catch(Exception e){e.printStackTrace();}
 	}
 
 	/* Variables */
