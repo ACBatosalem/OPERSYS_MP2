@@ -71,10 +71,12 @@ public class Game {
 	
 	public void createPassengers(){
 		/* Initialize Passengers */
+		int[] inStation = {4,1,3,3,6,2,0,0,5,7};
+		int[] outStation = {1,2,0,5,3,1,4,7,6,0};
 		for(int i=0;i<totalPassengers;i++) 
 		{
-			inStationNum = (int)Math.floor(Math.random()*8);
-			new Passenger(allStations.get(inStationNum), c, i, allStations.get(outStat(inStationNum)));
+			//inStationNum = (int)Math.floor(Math.random()*8);
+			new Passenger(allStations.get(inStation[i]), c, i, allStations.get(outStation[i]));
 			threadsCompleted++;
 			try {Thread.sleep(300);} catch(Exception e){}
 		}
