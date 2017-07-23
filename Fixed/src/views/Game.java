@@ -52,14 +52,6 @@ public class Game {
 		
 		update();
 		
-//		final Timeline timeline = new Timeline(
-//	            new KeyFrame(new Duration(500), 
-//	                         e -> {update();})
-//	        );
-//		timeline.setCycleCount(Timeline.INDEFINITE);
-//		timeline.setAutoReverse(false);
-//		timeline.play();
-		
 	}
 	
 	public void setUpLayout(){
@@ -93,7 +85,7 @@ public class Game {
 		
 		for(int i = 0; i < allStations.size(); i++){
 			int pass = allStations.get(i).getWaitPassCount(false);
-			p.createStation(i, pass);
+			p.createStation(i, pass, allStations.get(i).getWaitPassCount(true));
 			System.out.println("Station: " + (i + 1) + " Passengers: " + pass);
 		}
 		
@@ -115,7 +107,7 @@ public class Game {
 		
 		for(int i = 0; i < allStations.size(); i++){
 			int pass = allStations.get(i).getWaitPassCount(false);
-			p.createStation(i, pass);
+			p.createStation(i, pass, allStations.get(i).getWaitPassCount(true));
 			System.out.println("Station: " + (i + 1) + " Passengers: " + pass);
 		}
 	}
@@ -124,7 +116,8 @@ public class Game {
 		for(int i = 0; i < t.stations.length; i++){
 			int j = i;
 			t.stations[i].setOnMouseClicked(e -> {
-				p.createStation(j, allStations.get(j).getWaitPassCount(false));
+				currentStation = j;
+				p.createStation(j, allStations.get(j).getWaitPassCount(false), allStations.get(j).getWaitPassCount(true));
 				layout.setRight(p.layout);
 			});
 		}
@@ -170,7 +163,6 @@ public class Game {
             	logic();
             }
         }, 0, 500);
-//		logic();
 	}
 	
 	public void logic(){
@@ -188,9 +180,6 @@ public class Game {
 				
 				threadsToReap = Math.min(allTrains.get(i).getBoardStation().getWaitPassCount(tempDirection),
 										 allTrains.get(i).getFreeSeats());
-				
-				if(allTrains.get(i).getBoardStation().getStationNum() == 1)
-					t.anims.get(i).start();
 				
 				if(threadsToReap == 0)
 					t.anims.get(i).start();
@@ -213,22 +202,20 @@ public class Game {
 	}
 	
 	public void resetStations(){
-//		timer.cancel();
-//		timer.purge();
-		
 		for(int i = 0; i < t.stations.length; i++){
-			int j = i;
-			p.createStation(j, allStations.get(j).getWaitPassCount(false));
+			p.createStation(i, allStations.get(i).getWaitPassCount(false), allStations.get(i).getWaitPassCount(true));
 			layout.setRight(p.layout);
 		}
-		
-//		update();
-		
+		p.createStation(currentStation, allStations.get(currentStation).getWaitPassCount(false), allStations.get(currentStation).getWaitPassCount(true));
+		layout.setRight(p.layout);
+		System.out.println(allStations.get(currentStation).getWaitPassCount(false) + " " + allStations.get(currentStation).getWaitPassCount(true));
 	}
 	
 	public void pause(){
 		
 	}
+	
+	public int currentStation = 0;
 	
 	public CalTrain c;
 	

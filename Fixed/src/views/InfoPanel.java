@@ -26,12 +26,12 @@ public class InfoPanel {
 	
 	public void initStations(){
 		for(int i = 0; i < stations.length; i++){
-			stations[i] = new Station(i, 0);
+			stations[i] = new Station(i, 0, 0);
 		}
 	}
 	
-	public void createStation(int index, int num){
-		stations[index].make(index, num);
+	public void createStation(int index, int numleft, int numright){
+		stations[index].make(index, numleft, numright);
 		layout.getChildren().clear();
 		addLayout(stations[index].layout);
 		if(p != null)
