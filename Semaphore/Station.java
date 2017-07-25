@@ -78,10 +78,26 @@ public class Station {
 		return leftWaitingPass;
 	}
 
+	public ArrayList<Passenger> getWaitingPass(boolean direction, int trainNum) {
+		ArrayList<Passenger> tempPass = new ArrayList<Passenger>();
+		for(Passenger p : getWaitingPass(direction))
+			if(p.getPreferredTrain() == trainNum)
+				tempPass.add(p);
+		return tempPass;
+	}
+
 	public int getWaitPassCount(boolean direction) {
 		if (direction)
 			return rightWaitingPass.size();
 		return leftWaitingPass.size();
+	}
+
+	public int getWaitPassCount(boolean direction, int trainNum) {
+		int counter = 0;
+		for(Passenger p : getWaitingPass(direction))
+			if (p.getPreferredTrain() == trainNum)
+				counter++;
+		return counter; 
 	}
 
 	public ArrayList<Train> getQueue(boolean direction) {

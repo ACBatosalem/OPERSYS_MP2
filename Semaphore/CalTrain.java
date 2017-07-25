@@ -44,7 +44,7 @@ public class CalTrain {
 							   + curr.getFreeSeats());
 
 			/* Boarding: Train side */
-			while(station.getWaitPassCount(curr.getDirection()) > 0 && station.getEmptySeats(curr.getDirection()) > 0)
+			while(station.getWaitPassCount(curr.getDirection(), curr.getTrainNum()) > 0 && station.getEmptySeats(curr.getDirection()) > 0)
 			{
 				try {
 					station.signalTrain();
@@ -73,8 +73,8 @@ public class CalTrain {
 		System.out.println("Passenger " + pass.getPassNum() + " arrives at Station " 
 						   + station.getStationNum() + ". Destination is Station " + 
 						   pass.getLeaveStation().getStationNum());
-		
 		station.signalStationLock();
+
 		/* Passenger waits for a train */
 		while (station.getTrainPass(pass.getDirection()) <= station.getEmptySeats(pass.getDirection()))
 		{
@@ -82,13 +82,13 @@ public class CalTrain {
 		}
 		
 
-		station.waitStationLock();
+		/*station.waitStationLock();
 		if(station.getTrainPass(pass.getDirection()) + 1 < station.getTotalSeats(pass.getDirection())) {
 			station.incStandPass(pass.getDirection());
 			System.out.println("Passenger " + pass.getPassNum() + 
 							   " boards Train " + station.getTrain(pass.getDirection()).getTrainNum());
 		}
-		station.signalStationLock();
+		station.signalStationLock();*/
 	}
 
 	public boolean station_on_board(Station station, Passenger pass, boolean allRode) {

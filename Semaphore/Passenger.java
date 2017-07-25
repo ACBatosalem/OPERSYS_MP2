@@ -1,11 +1,12 @@
 public class Passenger implements Runnable {
-	public Passenger(Station in, CalTrain system, int num, Station out) {
+	public Passenger(Station in, CalTrain system, int num, Station out, int trainNum) {
 		boardStation = in;
 		leaveStation = out;
 		boardStation.addPassenger(this, determineDirection());
 		direction = determineDirection();
 		sync = system;
 		passNum = num;
+		prefTrain = trainNum;
 		passThread.start();
 	}
 
@@ -23,6 +24,10 @@ public class Passenger implements Runnable {
 
 	public boolean getDirection() {
 		return direction;
+	}
+
+	public int getPreferredTrain() {
+		return prefTrain;
 	}
 
 	public boolean determineDirection() {
@@ -43,6 +48,7 @@ public class Passenger implements Runnable {
 	private Station boardStation;
 	private Station leaveStation;
 	private int passNum;
+	private int prefTrain;
 	private boolean direction;
 	private Thread passThread = new Thread(this);
 }

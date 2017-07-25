@@ -21,10 +21,18 @@ public class CalTrainDriver {
 		ArrayList<Train> allTrains = new ArrayList<Train>();
 
 		/* Passenger-related variables */
-		totalPassengers = 15;
+		totalPassengers = 10;
 		int passengersLeft = totalPassengers;	// Passengers left to be picked up
 		int passengersServed = totalPassengers;	// Passengers who haven't arrived to their destination
 		boolean trainsReturned = true;			// If trains haven't returned to Station 0
+
+		/* Analysis-related variables */
+		int[] testBoard1 = {4, 1, 3, 3, 6, 2, 0, 0, 5, 7, 6, 0, 7, 5, 4, 4, 4, 1, 3, 6, 4, 1, 3, 3, 6, 6, 0, 7, 5, 4};
+		int[] testLeave1 = {1, 2, 0, 5, 3, 1, 4, 7, 6, 0, 0, 7, 2, 7, 7, 1, 5, 6, 0, 4, 1, 2, 0, 5, 3, 0, 7, 2, 7, 7};
+		int[] trainNums = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
+
+		int numTrainTest = 1;
+		boolean trainTest = false;
 
 		/* Program running-related variables */
 		int totalPassengersBoarded = 0;
@@ -52,11 +60,19 @@ public class CalTrainDriver {
 		}
 		System.out.println();	// Separate Station Initialization Printing
 
-		/* Initialize Passengers */
+		/* Initialize Passengers
 		for(int i=0;i<totalPassengers;i++) 
 		{
 			inStationNum = (int)Math.floor(Math.random()*8);
 			tempRobot = new Passenger(allStations.get(inStationNum), ctrain, i, allStations.get(CalTrainDriver.outStat(inStationNum)));
+			threadsCompleted++;
+			try {Thread.sleep(300);} catch(Exception e){}
+		}*/
+
+		/******* FOR TEST RUN ONLY *********/
+		for(int i=0;i<totalPassengers;i++) 
+		{
+			tempRobot = new Passenger(allStations.get(testBoard1[i]), ctrain, i, allStations.get(testLeave1[i]), trainNums[i]);
 			threadsCompleted++;
 			try {Thread.sleep(300);} catch(Exception e){}
 		}
@@ -65,8 +81,9 @@ public class CalTrainDriver {
 		System.out.println("\n---------------------\n");
 		while(totalPassServed != totalPassengers || trainsReturned) 
 		{
+
 			/* Add Trains into Railway if deficient */
-			if(totalNumSeats < totalPassengers) 
+			if(totalNumSeats < totalPassengers && !trainTest) 
 			{
 				/* Establish Free Seats */
 				freeSeats = 5;
@@ -80,6 +97,9 @@ public class CalTrainDriver {
 				/* Indicates successful adding of Train */
 				allTrains.add(tempTrain);
 				trainCtr++;
+
+				if (trainCtr == numTrainTest)
+					trainTest = true;
 			}
 
 			/* Random generation of passengers */
@@ -96,6 +116,8 @@ public class CalTrainDriver {
 				try {Thread.sleep(300);} catch(Exception e){}				
 			}*/
 
+			//System.out.println("Trains size = " + allTrains.size());
+
 			/* How Train Works */
 			for(int j=0;j<allTrains.size();j++) {
 				int tempStatNum = allTrains.get(j).getBoardStation().getStationNum();
@@ -103,7 +125,8 @@ public class CalTrainDriver {
 				int threadsToReap = -1;
 				int threadsReaped = 0;
 
-				threadsToReap = Math.min(allTrains.get(j).getBoardStation().getWaitPassCount(tempDirection),
+				System.out.println("Number = " + allTrains.get(j).getBoardStation().getWaitPassCount(tempDirection, allTrains.get(j).getTrainNum()));
+				threadsToReap = Math.min(allTrains.get(j).getBoardStation().getWaitPassCount(tempDirection, allTrains.get(j).getTrainNum()),
 										 allTrains.get(j).getFreeSeats());
 
 				/* Passengers board train */
@@ -111,10 +134,12 @@ public class CalTrainDriver {
 					boolean boarded = false;
 					if(threadsCompleted > 0) {
 						boarded = ctrain.station_on_board(allTrains.get(j).getBoardStation(),
-														  allTrains.get(j).getBoardStation().getWaitingPass(tempDirection).get(0),
+														  allTrains.get(j).getBoardStation().getWaitingPass(tempDirection, allTrains.get(j).getTrainNum()).get(0),
 														  threadsReaped + 1 == threadsToReap);
-						if(boarded)
+						if(boarded) {
+							System.out.println("SAY YEAH");
 							threadsReaped++;
+						}
 						//try{allTrains.get(j).trainThread.sleep(500);} catch(Exception e){}
 					}
 				}
