@@ -77,8 +77,6 @@ public class Train {
 				 * If there is a train at the middle point, stop at current station
 				 */
 				
-				
-				
             	if(sprite.getLayoutY() + num < hBounds && !right && !up && !reverse){
             		num += multiplier;
                 	sprite.setTranslateY(sprite.getLayoutY() + num);
@@ -171,6 +169,13 @@ public class Train {
                 	if(sprite.getTranslateX() == 0 && sprite.getTranslateY() == 115){
                 		if(g.allStations.get(0).getWaitingPass(true).size() > 0)
                 			stop();
+                		
+                		if(g.allTrains.get(trainNum - 1).getBoardStation().getStationNum() == 2)
+                			stop();
+                		
+                		if(g.allStations.get(1).getQueue(true).size() > 0)
+                			stop();
+                			
                 		atStation = 0;
                 	}
                 	
@@ -265,8 +270,16 @@ public class Train {
                 	if(sprite.getTranslateY() < 80 && sprite.getTranslateY() > 10  && sprite.getTranslateX() == 105){
                 		if(g.allStations.get(7).getWaitingPass(false).size() > 0)
                 			stop();
+                		
+                		if(g.allTrains.get(trainNum - 1).getBoardStation().getStationNum() == 6)
+                			stop();
+                		
+                		if(g.allStations.get(6).getQueue(true).size() > 0)
+                			stop();
                 		atStation = 7;
                 	}
+                	
+                	
             	}
 			}
 		};

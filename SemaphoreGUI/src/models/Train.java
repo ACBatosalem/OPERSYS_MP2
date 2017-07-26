@@ -2,6 +2,8 @@ package models;
 
 import java.util.*;
 
+import controllers.Game;
+
 public class Train implements Runnable {
 	public Train(Station in, CalTrain system, int free, int trainNum) {
 		boardStation = in;
@@ -75,7 +77,7 @@ public class Train implements Runnable {
 	@Override
 	public void run() {
 		while(getContinueRun()) {
-			System.out.println("thread alive");
+//			System.out.println("thread alive");
 			if (boardStation.getTrain(direction) == null &&
 				boardStation.checkNextQueue(this, direction)) 
 			{
@@ -98,6 +100,14 @@ public class Train implements Runnable {
 				boardStation.addTrainQueue(this, direction);
 				System.out.println("Train " + trainNum + " is going next to Station "
 								   + (boardStation.getStationNum() + 1));
+				
+				if(trainNum > 0){
+					if(sync.getGame().allTrains.get(trainNum - 1 - Game.decommissioned).getBoardStation().getStationNum() == boardStation.getStationNum() + 1){
+						if(sync.getGame().allTrains.get(trainNum - 1 - Game.decommissioned).getDirection() == direction)
+							try{Thread.sleep(2000);}catch(Exception e){}
+					}
+				}
+					
 			}
 			try{Thread.sleep(1700);} catch(Exception e) {}
 		}

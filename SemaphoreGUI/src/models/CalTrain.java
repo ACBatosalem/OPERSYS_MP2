@@ -13,6 +13,10 @@ public class CalTrain {
 		this.g = g;
 	}
 	
+	public Game getGame(){
+		return g;
+	}
+	
 	public Station station_init(int num) 
 	{
 		System.out.println("Initializing Station " + num);
@@ -76,8 +80,8 @@ public class CalTrain {
 			station.setTotalSeats(curr.getDirection(), 0);
 			System.out.println("Train " + curr.getTrainNum() 
 								+ " leaves Station " + (station.getStationNum() + 1));
-			if(g.t.anims.size() > 0)
-				g.t.getAnim(curr.getTrainNum()).start();
+			if(g.t.anims.size() > 0 && curr.getTrainNum() - Game.decommissioned >= 0)
+				g.t.getAnim(curr.getTrainNum() - Game.decommissioned).start();
 			//station.getLock().unlock();
 		}
 	}
@@ -93,12 +97,12 @@ public class CalTrain {
 //		feedText.add("Passenger " + pass.getPassNum() + " arrives at Station " 
 //				   + (station.getStationNum() + 1) + ". Destination is Station " + 
 //				   (pass.getLeaveStation().getStationNum() + 1));
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
+//		
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e1) {
 //			e1.printStackTrace();
-		}
+//		}
 		station.getLock().unlock();
 
 		/* Passenger waits for a train */
@@ -110,8 +114,8 @@ public class CalTrain {
 		station.getLock().lock();
 		if(station.getTrainPass(pass.getDirection()) + 1 < station.getTotalSeats(pass.getDirection())) {
 			station.incStandPass(pass.getDirection());
-			System.out.println("Passenger " + pass.getPassNum() + 
-							   " boards Train " + station.getTrain(pass.getDirection()).getTrainNum());
+//			System.out.println("Passenger " + pass.getPassNum() + 
+//							   " boards Train " + station.getTrain(pass.getDirection()).getTrainNum());
 			feedText.add("Passenger " + pass.getPassNum() + 
 							   " boards Train " + station.getTrain(pass.getDirection()).getTrainNum());
 		}
@@ -148,7 +152,7 @@ public class CalTrain {
 			boarded = true;
 		}
 		
-		try { Thread.sleep(1000); } catch(Exception e) {}
+//		try { Thread.sleep(1000); } catch(Exception e) {}
 		return boarded;
 	}
 

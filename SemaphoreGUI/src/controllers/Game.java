@@ -24,6 +24,8 @@ public class Game {
 	public int passLeft = 0;
 	public int nextStation = 0;
 	
+	public static int decommissioned = 0;
+	
 	public PassengerFeed passFeed;
 	
 	public Timer timer = new Timer();
@@ -187,7 +189,7 @@ public class Game {
             	 */
             	logic();
             }
-        }, 0, 500);
+        }, 0, 100);
 	}
 	
 	public void logic(){
@@ -240,6 +242,7 @@ public class Game {
 			if (totalPassServed == totalPassengers) {
 				allTrains.get(i).stopRun();
 				System.out.println("Train " + allTrains.get(i).getTrainNum() + " is decommissioned.");
+				decommissioned++;
 				allTrains.remove(allTrains.get(i));
 				t.anims.remove(i);
 				t.trains.remove(i);
@@ -253,19 +256,21 @@ public class Game {
 	}
 	
 	public void checkStop(){
-//		for(int i = 1; i < allTrains.size() - 2; i++){
-//			if(allTrains.get(i - 1).getBoardStation().getStationNum() == allTrains.get(i).getBoardStation().getStationNum()){
-//				t.getAnim(i).stop();
-//			}
-//			
-//			if(allTrains.get(i - 1).getBoardStation().getStationNum() > allTrains.get(i).getBoardStation().getStationNum())
-//				t.getAnim(i).start();
-//		}
+		for(int i = 1; i < allTrains.size() - 2; i++){
+			if(allTrains.get(i - 1).getBoardStation().getStationNum() == allTrains.get(i).getBoardStation().getStationNum() + 1){
+				t.getAnim(i).stop();
+			}
+			
+			if(allTrains.get(i - 1).getBoardStation().getStationNum() > allTrains.get(i).getBoardStation().getStationNum() + 1)
+				t.getAnim(i).start();
+		}
 		
 		if(currentTrain > 0){
 			try{
-				if(allTrains.get(currentTrain).getBoardStation().checkNextQueue(allTrains.get(currentTrain - 1), allTrains.get(currentTrain).getDirection()))
-					t.getAnim(currentTrain).stop();
+//				if(allTrains.get(currentTrain).getBoardStation().checkNextQueue(allTrains.get(currentTrain - 1), allTrains.get(currentTrain).getDirection()))
+//					t.getAnim(currentTrain).stop();
+//				else
+//					t.getAnim(currentTrain).start();
 			}catch(Exception e){}
 		}
 			
