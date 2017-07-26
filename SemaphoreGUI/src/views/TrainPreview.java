@@ -13,7 +13,7 @@ public class TrainPreview {
 	public TrainPreview(int trainNum, int passNum, int nextStation){
 		layout = new Pane();
 		
-		labels = new Label[] {new Label("Train " + trainNum), new Label("Passengers: " + passNum), new Label("Next Station: " + nextStation)};
+		labels = new Label[] {new Label("Train " + trainNum), new Label("Passengers: " + passNum + "/5"), new Label("Next Station: " + nextStation)};
 		
 		for(int i = 0; i < labels.length; i++){
 			labels[i].setFont(new Font("Consolas", 14));

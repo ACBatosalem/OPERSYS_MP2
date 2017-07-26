@@ -12,6 +12,7 @@ import models.Passenger;
 import models.Station;
 import models.Train;
 import views.InfoPanel;
+import views.PassengerFeed;
 import views.Track;
 
 public class Game {
@@ -19,9 +20,11 @@ public class Game {
 	public Scene scene;
 	public Track t;
 	public InfoPanel p;
-	public static int ctr = 0;
+	public static boolean pause = false;
 	public int passLeft = 0;
 	public int nextStation = 0;
+	
+	public PassengerFeed passFeed;
 	
 	public Timer timer = new Timer();
 	
@@ -42,13 +45,26 @@ public class Game {
 		if(totalPassengers > 0)
 			createTrain();
 		
+		passFeed = new PassengerFeed();
+		
+		for(int i = 0; i < c.getText().size(); i++)
+			passFeed.addEntry(c.getText().get(i));
+		
 		window.setScene(scene);
 		window.show();
 		window.setTitle("CalTrain with Semaphores - Group 2: Aguila, Batosalem, Mirafuentes");
 		window.setResizable(false);
-		
+		window.setX(350);
 		update();
 		
+	}
+	
+	public void updateFeed(){
+		for(int i = 0; i < c.getText().size(); i++){
+			if(!passFeed.exists(c.getText().get(i)))
+				passFeed.addEntry(c.getText().get(i));
+		}
+			
 	}
 	
 	public void setUpLayout(){
@@ -72,12 +88,27 @@ public class Game {
 	
 	public void createPassengers(){
 		/* Initialize Passengers */
-		int[] inStation = {4,1,3,3,6,2,0,0,5,7};
-		int[] outStation = {1,2,0,5,3,1,4,7,6,0};
+		int[] inStation = {1,1,1,1,1,1,
+						   2,2,2,2,2,2,2,2,
+						   3,3,3,3,
+						   4,4,4,4,4,
+						   5,5,5,
+						   6,6,
+						   7,7,7,
+						   8,8,8};
+		int[] outStation = {2,3,4,8,8,8,
+							5,5,6,6,6,7,7,7,
+							4,6,6,6,
+							5,5,6,8,1,
+							2,8,1,
+							7,4,
+							8,8,1,
+							3,6,6};
 		for(int i=0;i<totalPassengers;i++) 
 		{
 			//inStationNum = (int)Math.floor(Math.random()*8);
-			new Passenger(allStations.get(inStation[i]), c, i, allStations.get(outStation[i]));
+			
+			new Passenger(allStations.get(inStation[i]-1), c, i, allStations.get(outStation[i]-1));
 			threadsCompleted++;
 			try {Thread.sleep(300);} catch(Exception e){}
 		}
@@ -91,9 +122,9 @@ public class Game {
 		a();
 	}
 	
-	public void addPassenger(int in, boolean direction){
+	public void addPassenger(int in, int out, boolean direction){
 		inStationNum = in;
-		Passenger temp = new Passenger(allStations.get(in), c, totalPassengers++, allStations.get(outStat(in)));
+		Passenger temp = new Passenger(allStations.get(in), c, totalPassengers++, allStations.get(out));
 		if(temp.getDirection() != direction){
 			allStations.get(in).decWaitPass(temp, temp.getDirection());
 			temp.setDirection(direction);
@@ -144,11 +175,6 @@ public class Game {
 		t.createTrain(this);
 	}
 	
-	public int outStat(int num) {
-		int number = (int)Math.floor(Math.random()*8);
-		return (num != number) ? number : outStat(num);
-	}
-	
 	public void update(){
 		timer.schedule(new TimerTask() {
             @Override
@@ -167,21 +193,18 @@ public class Game {
 	public void logic(){
 		for(int i = 0; i < allTrains.size(); i++){
 			currentTrain = i;
-			try{
-				Thread.sleep(2500);
-				} catch(Exception e) {e.printStackTrace();}
+			try{Thread.sleep(2500);} catch(Exception e) {e.printStackTrace();}
 			
-			if(ctr % 2 == 1){
+			if(pause){
 				try{
 					System.out.println("Threads are asleep");
-					t.getAnim(i).stop();
-					Thread.sleep(1000000);
+					Thread.sleep(p.a.getTime());
 				} 
 				catch(Exception e){
 					e.printStackTrace();
 				}
 				finally{
-					ctr++;
+					pause = false;
 					t.getAnim(i).start();
 				}
 			}
@@ -197,7 +220,8 @@ public class Game {
 			while(threadsReaped < threadsToReap) {
 				boolean boarded = false;
 				if(threadsCompleted > 0) {
-					boarded = c.station_on_board(allTrains.get(i).getBoardStation(),
+					if(allTrains.get(i).getBoardStation().getWaitingPass(tempDirection).size() > 0)
+						boarded = c.station_on_board(allTrains.get(i).getBoardStation(),
 													  allTrains.get(i).getBoardStation().getWaitingPass(tempDirection).get(0),
 													  threadsReaped + 1 == threadsToReap);
 					if(boarded)
@@ -228,6 +252,26 @@ public class Game {
 		}
 	}
 	
+	public void checkStop(){
+//		for(int i = 1; i < allTrains.size() - 2; i++){
+//			if(allTrains.get(i - 1).getBoardStation().getStationNum() == allTrains.get(i).getBoardStation().getStationNum()){
+//				t.getAnim(i).stop();
+//			}
+//			
+//			if(allTrains.get(i - 1).getBoardStation().getStationNum() > allTrains.get(i).getBoardStation().getStationNum())
+//				t.getAnim(i).start();
+//		}
+		
+		if(currentTrain > 0){
+			try{
+				if(allTrains.get(currentTrain).getBoardStation().checkNextQueue(allTrains.get(currentTrain - 1), allTrains.get(currentTrain).getDirection()))
+					t.getAnim(currentTrain).stop();
+			}catch(Exception e){}
+		}
+			
+		
+	}
+	
 	public void resetTrains(){
 		t.resetLayout();
 	}
@@ -248,19 +292,18 @@ public class Game {
 	
 	public void pause(){
 		for(int i = 0; i < allTrains.size(); i++){
-			System.out.println(ctr);
 			
-			if(ctr % 2 == 1){
+			if(pause){
 				try{
 					System.out.println("Threads are asleep");
 					t.getAnim(i).stop();
-					Thread.sleep(1000000);
+					Thread.sleep(p.a.getTime());
 				} 
 				catch(Exception e){
 					e.printStackTrace();
 				}
 				finally{
-					ctr++;
+					pause = false;
 					t.getAnim(i).start();
 				}
 			}
@@ -276,7 +319,7 @@ public class Game {
 	public ArrayList<Train> allTrains = new ArrayList<Train>();
 	
 	/* Passenger-related variables */
-	int totalPassengers = 0;
+	int totalPassengers = 34;
 	int passengersLeft = totalPassengers;	// Passengers left to be picked up
 	int passengersServed = totalPassengers;	// Passengers who haven't arrived to their destination
 	boolean trainsReturned = true;			// If trains haven't returned to Station 0

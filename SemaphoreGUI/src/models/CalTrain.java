@@ -1,9 +1,13 @@
 package models;
 
+import java.util.ArrayList;
+
 import controllers.Game;
 
 public class CalTrain {
 	public Game g;
+	
+	public ArrayList<String> feedText = new ArrayList<String>();
 	
 	public CalTrain(Game g){
 		this.g = g;
@@ -85,6 +89,11 @@ public class CalTrain {
 		System.out.println("Passenger " + pass.getPassNum() + " arrives at Station " 
 						   + (station.getStationNum() + 1) + ". Destination is Station " + 
 						   (pass.getLeaveStation().getStationNum() + 1));
+		
+//		feedText.add("Passenger " + pass.getPassNum() + " arrives at Station " 
+//				   + (station.getStationNum() + 1) + ". Destination is Station " + 
+//				   (pass.getLeaveStation().getStationNum() + 1));
+		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
@@ -103,6 +112,8 @@ public class CalTrain {
 			station.incStandPass(pass.getDirection());
 			System.out.println("Passenger " + pass.getPassNum() + 
 							   " boards Train " + station.getTrain(pass.getDirection()).getTrainNum());
+			feedText.add("Passenger " + pass.getPassNum() + 
+							   " boards Train " + station.getTrain(pass.getDirection()).getTrainNum());
 		}
 		station.getLock().unlock();
 	}
@@ -113,8 +124,12 @@ public class CalTrain {
 		if (station.getTrain(pass.getDirection()) != null)
 		{
 			/* Passenger rides Train and updates Train stuff */
-			System.out.println("Passenger " + pass.getPassNum() + " is on board at Train " + 
+//			System.out.println("Passenger " + pass.getPassNum() + " is on board at Train " + 
+//				       station.getTrain(pass.getDirection()).getTrainNum());
+			
+			feedText.add("Passenger " + pass.getPassNum() + " is on board at Train " + 
 				       station.getTrain(pass.getDirection()).getTrainNum());
+			
 			station.getTrain(pass.getDirection()).addRider(pass);
 			station.getVarLock().lock();
 			station.decWaitPass(pass, pass.getDirection());
@@ -145,7 +160,12 @@ public class CalTrain {
 				if (t.getRiders().get(k).getLeaveStation().getStationNum() == station.getStationNum())
 				{
 					station.incEmptySeats(t.getRiders().get(k).getDirection());
-					System.out.println("Passenger " + t.getRiders().get(k).getPassNum() + 
+					
+//					System.out.println("Passenger " + t.getRiders().get(k).getPassNum() + 
+//									   " leaves Train " + t.getTrainNum() + 
+//									   " at Station " + (station.getStationNum() + 1));
+					
+					feedText.add("Passenger " + t.getRiders().get(k).getPassNum() + 
 									   " leaves Train " + t.getTrainNum() + 
 									   " at Station " + (station.getStationNum() + 1));
 					t.removeRider(t.getRiders().get(k));
@@ -173,6 +193,10 @@ public class CalTrain {
 
 	public int getPassLeft() {
 		return passengersLeft;
+	}
+	
+	public ArrayList<String> getText(){
+		return feedText;
 	}
 
 	private int passengersBoarded = 0;

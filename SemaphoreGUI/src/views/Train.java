@@ -69,6 +69,15 @@ public class Train {
 				g.resetStations();
 				g.resetTrainPrev();
 				g.resetTrains();
+				g.updateFeed();
+				g.checkStop();
+				
+				/*
+				 * If there is a train at the destination station, stop at the middle point
+				 * If there is a train at the middle point, stop at current station
+				 */
+				
+				
 				
             	if(sprite.getLayoutY() + num < hBounds && !right && !up && !reverse){
             		num += multiplier;

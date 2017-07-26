@@ -2,7 +2,7 @@ package views;
 
 import controllers.Game;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+//import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -21,11 +21,17 @@ public class AddPanel {
 	public Game g;
 	
 	public boolean addPass = false;
+	private static long time;
 	
 	public AddPanel(Game g){
+		time = 0;
 		this.g = g;
 		setUpButtons();
 		setUpLayout();
+	}
+	
+	public long getTime() {
+		return time;
 	}
 	
 	public void setUpButtons(){
@@ -49,7 +55,7 @@ public class AddPanel {
 		
 		options[0].setOnMouseClicked(e -> {
 			boolean no = false;
-			if(Game.ctr % 2 == 0 && g.t.trains.size() < 15){
+			if(!Game.pause && g.t.trains.size() < 15){
 				for(int i = 0; i < g.t.trains.size(); i++){
 					System.out.println("y " + g.t.trains.get(i).getTranslateY() + " x " + g.t.trains.get(i).getTranslateX());
 					if(g.t.trains.get(i).getTranslateY() < 150 && g.t.trains.get(i).getTranslateX() == 0)
@@ -80,7 +86,7 @@ public class AddPanel {
 					if(d.equals("Right"))
 						direction = true;
 					for(int i = 0; i < Integer.parseInt(t.input2.getText()); i++)
-						g.addPassenger(t.station.getValue() - 1, direction);
+						g.addPassenger(t.station.getValue() - 1, t.destination.getValue() - 1, direction);
 					
 					t.stage.close();
 				}
@@ -88,10 +94,23 @@ public class AddPanel {
 		});
 		
 		options[2].setOnMouseClicked(e -> {
-			Game.ctr++;
-			for(int i = 0; i < g.t.anims.size(); i++){
-				System.out.println("Paused!");
-			}
+			
+			PausePanel p = new PausePanel();
+			
+			p.accept.setOnAction(k -> {
+				time = p.input.getValue() * 1000;
+				if(time != 0) {
+					for(int i = 0; i < g.allTrains.size(); i++){
+						g.t.getAnim(i).stop();
+					}
+					System.out.println("Paused!");
+					Game.pause = true;
+					p.window.close();
+				}
+			});
+			
+			//System.out.println("ctr is " + Game.ctr);
+			
 		});
 	}
 	

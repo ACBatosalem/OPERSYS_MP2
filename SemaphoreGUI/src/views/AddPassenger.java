@@ -20,8 +20,10 @@ public class AddPassenger {
 	public Button accept;
 	public Label text1;
 	public Label text2;
+	public Label text3;
 	
 	public ComboBox<Integer> station;
+	public ComboBox<Integer> destination;
 	public ComboBox<String> direction;
 	
 	public AddPassenger(){
@@ -43,31 +45,36 @@ public class AddPassenger {
 		
 		text1 = new Label("Station:");
 		text2 = new Label("Add:");
+		text3 = new Label("Destination:");
 		
 		input2 = new TextField();
 		
 		station = new ComboBox<Integer>();
+		destination = new ComboBox<Integer>();
 		direction = new ComboBox<String>();
 		
 		accept = new Button("Accept");
 		
-		scene = new Scene(layout, 200, 200);
+		scene = new Scene(layout, 200, 300);
 	}
 	
 	public void setUpLayout(){
-		layout.getChildren().addAll(text1, station, direction, text2, input2, accept);
+		layout.getChildren().addAll(text1, station, text3, destination, direction, text2, input2, accept);
 		layout.setAlignment(Pos.CENTER);
 		layout.setPadding(new Insets(10));
 	}
 	
 	public void setUpChoiceBox(){
 		station.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
+		destination.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 		direction.getItems().addAll("Left", "Right");
 
 		station.setPrefSize(200, 20);
+		destination.setPrefSize(200, 20);
 		direction.setPrefSize(200, 20);
 		
 		station.setValue(1);
+		station.setValue(2);
 		direction.setValue("Left");
 	}
 	
@@ -81,6 +88,7 @@ public class AddPassenger {
 		
 		text1.setFont(new Font("Arial", 12));
 		text2.setFont(new Font("Arial", 12));
+		text3.setFont(new Font("Arial", 12));
 		input2.setFont(new Font("Arial", 12));
 		accept.setFont(new Font("Arial", 12));
 		
